@@ -30,8 +30,7 @@ namespace IO {
 
         private void WriteToHandle(IntPtr handle, string text) {
             if (handle == new IntPtr(-1)) return; // INVALID_HANDLE_VALUE
-            
-            byte[] bytes = Encoding.Default.GetBytes(text);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
             uint bytesWritten = 0;
             WriteFile(handle, bytes, (uint)bytes.Length, out bytesWritten, IntPtr.Zero);
         }
