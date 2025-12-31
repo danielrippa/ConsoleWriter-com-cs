@@ -29,5 +29,12 @@ namespace IO {
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
+        
+        [DllImport("kernel32.dll")]
+        public static extern uint GetConsoleOutputCP();
+        
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern bool WriteConsole(IntPtr hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, 
+            out uint lpNumberOfCharsWritten, IntPtr lpReserved);
     }
 }

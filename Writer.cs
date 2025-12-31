@@ -21,16 +21,31 @@ namespace IO {
         }
 
         public void WriteOut(string text) {
-            WriteToHandle(stdoutHandle, text);
+            uint codepage = GetConsoleOutputCP();
+            Encoding encoding;
+            try {
+                encoding = Encoding.GetEncoding((int)codepage);
+            } catch {
+                encoding = Encoding.Default;
+            }
+            WriteToHandle(stdoutHandle, text, encoding);
         }
 
         public void WriteErr(string text) {
-            WriteToHandle(stderrHandle, text);
+            uint codepage = GetConsoleOutputCP();
+            Encoding encoding;
+            try {
+                encoding = Encoding.GetEncoding((int)codepage);
+            } catch {
+                encoding = Encoding.Default;
+            }
+            WriteToHandle(stderrHandle, text, encoding);
         }
 
-        private void WriteToHandle(IntPtr handle, string text) {
+        private void WriteToHandle(IntPtr handle, string text, Encoding encoding) {
             if (handle == new IntPtr(-1)) return; // INVALID_HANDLE_VALUE
-            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            
+            byte[] bytes = encoding.GetBytes(text);
             uint bytesWritten = 0;
             WriteFile(handle, bytes, (uint)bytes.Length, out bytesWritten, IntPtr.Zero);
         }
